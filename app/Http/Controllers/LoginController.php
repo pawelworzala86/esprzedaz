@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -20,6 +21,7 @@ class LoginController extends Controller
         $sessid = explode(':', $resp['message'])[1];
 
         echo $sessid;
+        Session::put('SESSID', $sessid);
 
         if ($response->successful()) { 
             echo "Request was successful!"; 
