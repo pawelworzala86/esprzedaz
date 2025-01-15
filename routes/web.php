@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormularzController;
 use App\Http\Controllers\LoginController;
 
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\EditPetController;
+use App\Http\Controllers\PetsController;
 
 
 
@@ -29,8 +28,8 @@ Route::post('/api/user/login', [LoginController::class, 'login']);
 
 
 
-Route::get('/sklep', [ShopController::class, 'showTable']);
+Route::get('/sklep', [PetsController::class, 'table']);
 //Route::get('/sklep/dodaj', function () { return view('addPet'); });
-Route::get('/sklep/dodaj', [EditPetController::class, 'editPet']);
-Route::get('/sklep/edycja/{id}', [EditPetController::class, 'editPet']);
-Route::post('/api/pets', [EditPetController::class, 'addPet']);
+Route::get('/sklep/dodaj', [PetsController::class, 'editPet']);
+Route::get('/sklep/edycja/{id}', [PetsController::class, 'editPet']);
+Route::post('/api/pets', [PetsController::class, 'addPet']);
