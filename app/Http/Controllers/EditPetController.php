@@ -6,35 +6,38 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class AddPetController extends Controller
+class EditPetController extends Controller
 {
     public function editPet($id=null){
 
-        $resp = [];
+        $resp = [
+            'id'=>'',
+            'name'=>'',
+        ];
 
         if($id){
             $response = Http::get('https://petstore.swagger.io/v2/pet/'.$id);
             $resp = $response->json();
-            var_dump($resp);
+            //var_dump($resp);
         }
 
-        return view('addPet', ['pets' => $resp]);
+        return view('editPet', ['pet' => $resp]);
     }
 
-    public function add(Request $request)
+    public function addPet(Request $request)
     {
         $validatedData = $request->validate([
-            'login' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
+            'id' => 'integer',
+            'name' => 'required|string|max:255',
         ]);
 
-        $response = Http::post('https://petstore.swagger.io/v2/pet',[
-            "id"=> 0,
+        $dataset = [
+            "id"=> $validatedData['id']??0,
             "category"=> [
                 "id"=> 0,
                 "name"=> "string"
             ],
-            "name"=> "doggie Turbo",
+            "name"=> $validatedData['name'],
             "photoUrls"=> [
                 "string"
             ],
@@ -45,7 +48,18 @@ class AddPetController extends Controller
                 ]
             ],
             "status"=> "available"
-        ]); 
+        ];
+
+        $method = 'post';
+        if(strlen($validatedData['id'])){
+            $method = 'put';
+
+            //$dataset['name'] = $validatedData['name'];
+        }
+        //var_dump($validatedData);
+        //exit;
+
+        $response = Http::{$method}('https://petstore.swagger.io/v2/pet',$dataset); 
         $resp = $response->json();
 
         var_dump($resp);

@@ -6,7 +6,7 @@ use App\Http\Controllers\FormularzController;
 use App\Http\Controllers\LoginController;
 
 use App\Http\Controllers\ShopController;
-use App\Http\Controllers\AddPetController;
+use App\Http\Controllers\EditPetController;
 
 
 
@@ -31,6 +31,6 @@ Route::post('/api/user/login', [LoginController::class, 'login']);
 
 Route::get('/sklep', [ShopController::class, 'showTable']);
 //Route::get('/sklep/dodaj', function () { return view('addPet'); });
-Route::get('/sklep/dodaj', [AddPetController::class, 'editPet']);
-Route::get('/sklep/edycja/{id}', [AddPetController::class, 'editPet']);
-Route::post('/api/pets', [AddPetController::class, 'add']);
+Route::get('/sklep/dodaj', [EditPetController::class, 'editPet']);
+Route::get('/sklep/edycja/{id}', [EditPetController::class, 'editPet']);
+Route::post('/api/pets', [EditPetController::class, 'addPet']);

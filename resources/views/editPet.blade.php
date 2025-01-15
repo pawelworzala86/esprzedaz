@@ -6,8 +6,10 @@
 <body>
     <form action="/api/pets" method="POST">
         @csrf
+        <input type="hidden" id="id" name="id" value="{{$pet['id']??''}}">
+
         <label for="name">Nazwa zwierzaka:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="name" value="{{$pet['name']??''}}" required>
 
         <button type="submit">Zapisz</button>
     </form>

@@ -8,8 +8,8 @@
     <div>
         @foreach($pets as $row)
             <div>
-                <h3>{{ $row['name'] }}</h3>
-                <a href="/sklep/edycja/{{$row['id']}}">Edytuj</a>
+                <h3>{{ $row['name']??'' }}</h3>
+                <a href="/sklep/edycja/{{$row['id']??''}}">Edytuj</a>
             </div>
         @endforeach
     </div>
