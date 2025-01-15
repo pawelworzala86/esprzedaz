@@ -2,12 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PetsController;
-
-
-Route::get('/logowanie', function () { return view('login'); });
-Route::post('/api/user/login', [LoginController::class, 'login']);
 
 
 Route::get('/', [PetsController::class, 'table']);
