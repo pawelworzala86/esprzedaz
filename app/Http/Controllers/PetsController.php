@@ -23,7 +23,7 @@ class PetsController extends Controller
             return strlen($element['name']??''); 
         });
 
-        return view('shop', ['pets' => $pets]);
+        return view('pets', ['pets' => $pets]);
     }
     public function editPet($id=null){
 
