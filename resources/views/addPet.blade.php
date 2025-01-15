@@ -6,13 +6,10 @@
 <body>
     <form action="/api/pets" method="POST">
         @csrf
-        <label for="login">Login:</label>
-        <input type="text" id="login" name="login" required>
+        <label for="name">Nazwa zwierzaka:</label>
+        <input type="text" id="name" name="name" required>
 
-        <label for="password">Hasło:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Wyślij</button>
+        <button type="submit">Zapisz</button>
     </form>
 </body>
 </html>

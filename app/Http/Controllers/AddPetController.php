@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Session;
 
 class AddPetController extends Controller
 {
+    public function editPet($id=null){
+
+        $resp = [];
+
+        if($id){
+            $response = Http::get('https://petstore.swagger.io/v2/pet/'.$id);
+            $resp = $response->json();
+            var_dump($resp);
+        }
+
+        return view('addPet', ['pets' => $resp]);
+    }
+
     public function add(Request $request)
     {
         $validatedData = $request->validate([
