@@ -30,6 +30,10 @@ class PetsController extends Controller
         $resp = [
             'id'=>'',
             'name'=>'',
+            'category'=>[
+                'id'=>0,
+                'name'=>'',
+            ],
         ];
 
         if($id){
@@ -46,13 +50,14 @@ class PetsController extends Controller
         $validatedData = $request->validate([
             'id' => 'integer',
             'name' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
         ]);
 
         $dataset = [
             "id"=> $validatedData['id']??0,
             "category"=> [
                 "id"=> 0,
-                "name"=> "string"
+                "name"=> $validatedData['category']
             ],
             "name"=> $validatedData['name'],
             "photoUrls"=> [
@@ -100,10 +105,10 @@ class PetsController extends Controller
         $response = Http::delete('https://petstore.swagger.io/v2/pet/'.$id); 
         $resp = $response->json();
 
-        var_dump($resp);
+        //var_dump($resp);
 
         if ($response->successful()) { 
-            echo "Request was successful!";
+            //echo "Request was successful!";
             header('Location: /sklep');
             exit;
         } else { 
