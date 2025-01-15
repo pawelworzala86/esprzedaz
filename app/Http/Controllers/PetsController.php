@@ -95,4 +95,29 @@ class PetsController extends Controller
 
         return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
     }
+    public function deletePet($id)
+    {
+        $response = Http::delete('https://petstore.swagger.io/v2/pet/'.$id); 
+        $resp = $response->json();
+
+        var_dump($resp);
+
+        if ($response->successful()) { 
+            echo "Request was successful!";
+            header('Location: /sklep');
+            exit;
+        } else { 
+            echo "Request failed!"; 
+        }
+
+        return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
+    }
+    public function deletePetDialog($id=null){
+
+        $pet = [
+            'id'=>$id,
+        ];
+
+        return view('deletePetDialog', ['pet' => $pet]);
+    }
 }

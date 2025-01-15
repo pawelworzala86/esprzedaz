@@ -10,6 +10,7 @@
             <div>
                 <h3>{{ $row['name']??'' }}</h3>
                 <a href="/sklep/edycja/{{$row['id']??''}}">Edytuj</a>
+                <a href="/sklep/usun/{{$row['id']??''}}">Usuń</a>
             </div>
         @endforeach
     </div>
