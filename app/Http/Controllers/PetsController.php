@@ -16,9 +16,10 @@ class PetsController extends Controller
         //var_dump($resp);
         foreach($pets as $key=>$pet){
             $pets[$key]['name'] = substr($pet['name']??'', 0, 64);
+            $pets[$key]['category']['name'] = substr($pet['category']['name']??'', 0, 32);
         }
 
-        //usunąłem petsy bez name albo name=''
+        //usunąłem pet'sy bez name albo name=''
         $pets = array_filter($pets, function($element){
             return strlen($element['name']??''); 
         });
@@ -34,12 +35,18 @@ class PetsController extends Controller
                 'id'=>0,
                 'name'=>'',
             ],
+            'tags'=>'',
         ];
 
         if($id){
             $response = Http::get('https://petstore.swagger.io/v2/pet/'.$id);
             $resp = $response->json();
-            //var_dump($resp);
+            var_dump($resp);
+            $tags = [];
+            foreach($resp['tags'] as $tag){
+                $tags[] = $tag['name'];
+            }
+            $resp['tags'] = join(',',$tags);
         }
 
         return view('editPet', ['pet' => $resp]);
@@ -48,10 +55,22 @@ class PetsController extends Controller
     public function addPet(Request $request)
     {
         $validatedData = $request->validate([
-            'id' => 'integer',
+            'id' => 'nullable|integer',
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
+            'tags' => 'required|string|max:1024',
         ]);
+
+        //var_dump('$validatedData');
+        //exit;
+
+        $tags = explode(',',$validatedData['tags']);
+        foreach($tags as $key=>$tag){
+            $tags[$key] = [
+                'id'=>0,
+                'name'=>$tag,
+            ];
+        }
 
         $dataset = [
             "id"=> $validatedData['id']??0,
@@ -63,12 +82,7 @@ class PetsController extends Controller
             "photoUrls"=> [
                 "string"
             ],
-            "tags"=> [
-                [
-                    "id"=> 0,
-                    "name"=> "string"
-                ]
-            ],
+            "tags"=> $tags,
             "status"=> "available"
         ];
 
@@ -84,7 +98,7 @@ class PetsController extends Controller
         $response = Http::{$method}('https://petstore.swagger.io/v2/pet',$dataset); 
         $resp = $response->json();
 
-        var_dump($resp);
+        //var_dump($resp);
 
         if ($response->successful()) { 
             echo "Request was successful!";
