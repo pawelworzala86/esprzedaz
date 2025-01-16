@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dodawanie zwierzaka</title>
-</head>
-<body>
+@include('includes.head')
     <form action="/api/pets" method="POST">
         @csrf
         <input type="hidden" id="id" name="id" value="{{$pet['id']??''}}">
@@ -23,5 +18,4 @@
 
         <button type="submit">Zapisz</button>
     </form>
-</body>
-</html>
+@include('includes.footer')

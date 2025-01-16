@@ -22,9 +22,9 @@ class PetsController extends Controller
         }
 
         //usunąłem pet'sy bez name albo name=''
-        $pets = array_filter($pets, function($element){
+        /*$pets = array_filter($pets, function($element){
             return strlen($element['name']??''); 
-        });
+        });*/
 
         return view('pets', ['pets' => $pets]);
     }

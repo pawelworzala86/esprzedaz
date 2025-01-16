@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Table Example</title>
-</head>
-<body>
+@include('includes.head')
     <h1>Wystąpił błąd</h1>
     <p>{{ $error['message'] }}</p>
     <style>
     </style>
-</body>
-</html>
+@include('includes.footer')
