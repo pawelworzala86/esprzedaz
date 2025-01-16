@@ -19,6 +19,12 @@ form .group label{
 form .group input{
 
 }
+button{
+
+}
+a{
+
+}
 </style>
 </body>
 </html>

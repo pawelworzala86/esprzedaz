@@ -10,9 +10,24 @@ use Illuminate\Support\Facades\Validator;
 
 class PetsController extends Controller
 {
-    public function table()
+    public function table($status=null)
     {
-        $response = Http::get('https://petstore.swagger.io/v2/pet/findByStatus?status=available'); 
+        if(!$status){
+            $status = 'dostepne';
+        }
+        if($status=='oczekujace'){
+            $status = 'pending';
+        }else if($status=='dostepne'){
+            $status = 'available';
+        }else if($status=='sprzedane'){
+            $status = 'sold';
+        }else{
+            return view('error', ['error' => [
+                'message'=>'Nieznany status pozycji w sklepie!',
+            ]]);
+        }
+
+        $response = Http::get('https://petstore.swagger.io/v2/pet/findByStatus?status='.$status); 
         $pets = $response->json();
 
         foreach($pets as $key=>$pet){

@@ -1,5 +1,10 @@
 @include('includes.head')
     <a href="/sklep/dodaj">Dodaj zwierzaka</a>
+
+    <a href="/sklep/dostepne">Dostepne</a>
+    <a href="/sklep/oczekujace">Oczekujące</a>
+    <a href="/sklep/sprzedane">Sprzedane</a>
+
     <div class="pets">
         @foreach($pets as $pet)
             <div class="pet">
