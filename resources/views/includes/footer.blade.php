@@ -1,4 +1,14 @@
 <style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    * {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 16.5px;
+}
 .pets{
     
 }

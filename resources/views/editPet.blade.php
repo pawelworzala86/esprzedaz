@@ -15,6 +15,13 @@
             <label for="tags">Tagi - po przecinku:</label>
             <input type="text" id="tags" name="tags" value="{{$pet['tags']??''}}" required>
         </div>
+        <div class="group">
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="available">Dostepne</option>
+                <option value="pending">Oczekujace</option>
+            </select>
+        </div>
 
         <button type="submit">Zapisz</button>
     </form>

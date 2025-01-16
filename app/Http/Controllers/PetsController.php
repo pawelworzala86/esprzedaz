@@ -65,6 +65,7 @@ class PetsController extends Controller
                 'name'=>'',
             ],
             'tags'=>'',
+            'status'=>'',
         ];
 
         if($id){
@@ -95,6 +96,7 @@ class PetsController extends Controller
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'tags' => 'required|string|max:1024',
+            'status' => 'required|string|max:255',
         ]);
         if ($validator->fails()) { throw new ValidationException($validator); }
         $validatedData = $validator->validated();
@@ -105,6 +107,12 @@ class PetsController extends Controller
                 'id'=>0,
                 'name'=>$tag,
             ];
+        }
+
+        if(($validatedData['status']!='available')&&($validatedData['status']!='pending')){
+            return view('error', ['error' => [
+                'message'=>'Nieznany status!',
+            ]]); 
         }
 
         $dataset = [
@@ -118,7 +126,7 @@ class PetsController extends Controller
                 "string"
             ],
             "tags"=> $tags,
-            "status"=> "available"
+            "status"=> $validatedData['status'],
         ];
 
         $method = 'post';
