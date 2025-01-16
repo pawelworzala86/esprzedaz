@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Validator;
 
 class PetsController extends Controller
 {
-    public function table($status=null)
+    public function table($status=null,$category=null)
     {
-        if(!$status){
+        if(!strlen($status)||($status==null)){
             $status = 'dostepne';
         }
+        //var_dump($status);
         if($status=='oczekujace'){
             $status = 'pending';
         }else if($status=='dostepne'){
@@ -35,7 +36,24 @@ class PetsController extends Controller
             $pets[$key]['category']['name'] = substr($pet['category']['name']??'', 0, 32);
         }
 
-        return view('pets', ['pets' => $pets]);
+        if(strlen($category)&&$category){
+            $pets = array_filter($pets, function($pet)use($category){
+                $cat = $pet['category']??[];
+                $cat = $cat['name']??'';
+                //var_dump([$cat,$category]);
+                return $cat==$category;
+            });
+        }
+
+        if($status=='pending'){
+            $status = 'oczekujace';
+        }else if($status=='available'){
+            $status = 'dostepne';
+        }else if($status=='sold'){
+            $status = 'sprzedane';
+        }
+
+        return view('pets', ['pets' => $pets,'status'=>$status,'category'=>$category]);
     }
     public function editPet($id=null){
 
