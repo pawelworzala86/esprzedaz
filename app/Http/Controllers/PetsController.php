@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 class PetsController extends Controller
 {
@@ -41,6 +43,13 @@ class PetsController extends Controller
         if($id){
             $response = Http::get('https://petstore.swagger.io/v2/pet/'.$id);
             $resp = $response->json();
+
+            if (!$response->successful()) {
+                return view('error', ['error' => [
+                    'message'=>'Nie odnaleziono zwierzaka w bazie!',
+                ]]);
+            }
+
             var_dump($resp);
             $tags = [];
             foreach($resp['tags'] as $tag){
@@ -54,15 +63,14 @@ class PetsController extends Controller
 
     public function addPet(Request $request)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'id' => 'nullable|integer',
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'tags' => 'required|string|max:1024',
         ]);
-
-        //var_dump('$validatedData');
-        //exit;
+        if ($validator->fails()) { throw new ValidationException($validator); }
+        $validatedData = $validator->validated();
 
         $tags = explode(',',$validatedData['tags']);
         foreach($tags as $key=>$tag){
