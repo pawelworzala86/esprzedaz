@@ -59,7 +59,7 @@ class PetsController extends Controller
                 ]]);
             }
 
-            var_dump($resp);
+            //var_dump($resp);
             $tags = [];
             foreach($resp['tags'] as $tag){
                 $tags[] = $tag['name'];
@@ -112,11 +112,13 @@ class PetsController extends Controller
         $resp = $response->json();
 
         if ($response->successful()) { 
-            echo "Request was successful!";
+            //echo "Request was successful!";
             header('Location: /sklep');
             exit;
         } else { 
-            echo "Request failed!"; 
+            return view('error', ['error' => [
+                'message'=>'Błąd połączenia z API!',
+            ]]); 
         }
 
         return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
@@ -130,7 +132,9 @@ class PetsController extends Controller
             header('Location: /sklep');
             exit;
         } else { 
-            echo "Request failed!"; 
+            return view('error', ['error' => [
+                'message'=>'Błąd połączenia z API!',
+            ]]); 
         }
 
         return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
