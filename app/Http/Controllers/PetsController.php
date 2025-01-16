@@ -15,16 +15,10 @@ class PetsController extends Controller
         $response = Http::get('https://petstore.swagger.io/v2/pet/findByStatus?status=available'); 
         $pets = $response->json();
 
-        //var_dump($resp);
         foreach($pets as $key=>$pet){
             $pets[$key]['name'] = substr($pet['name']??'', 0, 64);
             $pets[$key]['category']['name'] = substr($pet['category']['name']??'', 0, 32);
         }
-
-        //usunąłem pet'sy bez name albo name=''
-        /*$pets = array_filter($pets, function($element){
-            return strlen($element['name']??''); 
-        });*/
 
         return view('pets', ['pets' => $pets]);
     }
@@ -97,16 +91,10 @@ class PetsController extends Controller
         $method = 'post';
         if(strlen($validatedData['id'])){
             $method = 'put';
-
-            //$dataset['name'] = $validatedData['name'];
         }
-        //var_dump($validatedData);
-        //exit;
 
         $response = Http::{$method}('https://petstore.swagger.io/v2/pet',$dataset); 
         $resp = $response->json();
-
-        //var_dump($resp);
 
         if ($response->successful()) { 
             echo "Request was successful!";
@@ -116,10 +104,6 @@ class PetsController extends Controller
             echo "Request failed!"; 
         }
 
-        // Przetwarzanie danych
-        // Na przykład, zapisanie w bazie danych
-        // Model::create($validatedData);
-
         return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
     }
     public function deletePet($id)
@@ -127,10 +111,7 @@ class PetsController extends Controller
         $response = Http::delete('https://petstore.swagger.io/v2/pet/'.$id); 
         $resp = $response->json();
 
-        //var_dump($resp);
-
-        if ($response->successful()) { 
-            //echo "Request was successful!";
+        if ($response->successful()) {
             header('Location: /sklep');
             exit;
         } else { 
