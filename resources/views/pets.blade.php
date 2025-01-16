@@ -1,5 +1,4 @@
 @include('includes.head')
-
     <a href="/sklep/dodaj">Dodaj zwierzaka</a>
     <div class="pets">
         @foreach($pets as $pet)
@@ -16,12 +15,4 @@
             </div>
         @endforeach
     </div>
-
-    <style>
-        .pets{}
-        .pets .pet {
-    border: 1px solid #ccc;
-    margin-bottom: 16px;
-}
-    </style>
 @include('includes.footer')
