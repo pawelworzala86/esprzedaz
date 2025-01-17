@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
+use App\Enums\StatusEnum;
+use App\Rules\EnumRule;
 
 class PetsController extends Controller
 {
@@ -96,7 +98,7 @@ class PetsController extends Controller
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'tags' => 'required|string|max:1024',
-            'status' => 'required|string|max:255',
+            'status' => ['required', 'string', new EnumRule(StatusEnum::class)],
         ]);
         if ($validator->fails()) { throw new ValidationException($validator); }
         $validatedData = $validator->validated();
