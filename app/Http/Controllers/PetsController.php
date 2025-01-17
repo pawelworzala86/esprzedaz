@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Enums\StatusEnum;
 use App\Rules\EnumRule;
 
+use App\Exceptions\StatusException;
+use App\Exceptions\PetNotFindException;
+use App\Exceptions\ApiException;
+
 class PetsController extends Controller
 {
     public function table($status=null,$category=null)
@@ -17,7 +21,7 @@ class PetsController extends Controller
         if(!strlen($status)||($status==null)){
             $status = 'dostepne';
         }
-        //var_dump($status);
+   
         if($status=='oczekujace'){
             $status = 'pending';
         }else if($status=='dostepne'){
@@ -25,9 +29,7 @@ class PetsController extends Controller
         }else if($status=='sprzedane'){
             $status = 'sold';
         }else{
-            return view('error', ['error' => [
-                'message'=>'Nieznany status pozycji w sklepie!',
-            ]]);
+            throw new StatusException();
         }
 
         $response = Http::get('https://petstore.swagger.io/v2/pet/findByStatus?status='.$status); 
@@ -42,7 +44,6 @@ class PetsController extends Controller
             $pets = array_filter($pets, function($pet)use($category){
                 $cat = $pet['category']??[];
                 $cat = $cat['name']??'';
-                //var_dump([$cat,$category]);
                 return $cat==$category;
             });
         }
@@ -75,12 +76,9 @@ class PetsController extends Controller
             $resp = $response->json();
 
             if (!$response->successful()) {
-                return view('error', ['error' => [
-                    'message'=>'Nie odnaleziono zwierzaka w bazie!',
-                ]]);
+                throw new PetNotFindException();
             }
 
-            //var_dump($resp);
             $tags = [];
             foreach($resp['tags'] as $tag){
                 $tags[] = $tag['name'];
@@ -140,13 +138,10 @@ class PetsController extends Controller
         $resp = $response->json();
 
         if ($response->successful()) { 
-            //echo "Request was successful!";
             header('Location: /sklep');
             exit;
         } else { 
-            return view('error', ['error' => [
-                'message'=>'Błąd połączenia z API!',
-            ]]); 
+            throw new ApiException();
         }
 
         return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
@@ -160,9 +155,7 @@ class PetsController extends Controller
             header('Location: /sklep');
             exit;
         } else { 
-            return view('error', ['error' => [
-                'message'=>'Błąd połączenia z API!',
-            ]]); 
+            throw new ApiException();
         }
 
         return response()->json(['message' => 'Dane zostały zapisane pomyślnie!']);
