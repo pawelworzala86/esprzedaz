@@ -110,9 +110,7 @@ class PetsController extends Controller
         }
 
         if(($validatedData['status']!='available')&&($validatedData['status']!='pending')){
-            return view('error', ['error' => [
-                'message'=>'Nieznany status!',
-            ]]); 
+            throw new StatusException();
         }
 
         $dataset = [
